@@ -1,8 +1,9 @@
 class ArticlesController < ApplicationController
 before_action :set_article, only: [:show, :update, :destroy]
+after_action { pagy_headers_merge(@pagy) if @pagy }
 
   def index
-    @articles = Article.all
+    @pagy, @articles = pagy(Article.all)
     render json: @articles
   end
 
