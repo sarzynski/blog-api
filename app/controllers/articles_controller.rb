@@ -1,9 +1,10 @@
 class ArticlesController < ApplicationController
-before_action :set_article, only: [:show, :update, :destroy]
-after_action { pagy_headers_merge(@pagy) if @pagy }
+  before_action :set_article, only: [:show, :update, :destroy]
+  after_action { pagy_headers_merge(@pagy) if @pagy }
 
   def index
     @pagy, @articles = pagy(Article.all)
+    authorize @article
     render json: @articles
   end
 
@@ -14,6 +15,8 @@ after_action { pagy_headers_merge(@pagy) if @pagy }
 
   def create
     @article = Article.new(article_params)
+    @article.user = current_user
+    authorize @article
 
     if @article.save
       render json: @article
@@ -23,6 +26,7 @@ after_action { pagy_headers_merge(@pagy) if @pagy }
   end
 
   def update
+    authorize @article
     if @article.update(article_params)
       render json: @article
     else
@@ -31,6 +35,7 @@ after_action { pagy_headers_merge(@pagy) if @pagy }
   end
 
   def destroy
+    authorize @article
     @article.destroy
   end
 
@@ -38,6 +43,7 @@ after_action { pagy_headers_merge(@pagy) if @pagy }
 
   def set_screening
     @article = Article.find(params[:id])
+    authorize @article
   end
 
   def article_params
