@@ -41,6 +41,6 @@ after_action { pagy_headers_merge(@pagy) if @pagy }
   end
 
   def article_params
-    params.require(:article).permit(:title, :description, :image, :status, :publish_date, :user_id)
+    params.require(:article).permit(:title, :description, :image, :status, :publish_date, :user_id, :category_id)
   end
 end
