@@ -1,4 +1,23 @@
 class ArticlePolicy < ApplicationPolicy
+  class Scope
+    def initialize(user, scope)
+      @user  = user
+      @scope = scope
+    end
+
+    def resolve
+      if user.admin?
+        scope.all
+      else
+        scope.where(user: article.user)
+      end
+    end
+
+    private
+
+    attr_reader :user, :scope
+  end
+
   def index?
     true
   end
@@ -25,5 +44,3 @@ class ArticlePolicy < ApplicationPolicy
     user.present? && user == article.user
   end
 end
-
-# index tak by zwracane byly artkuly osoby ktora go stworzyla
