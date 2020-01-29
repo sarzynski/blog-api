@@ -41,6 +41,6 @@ after_action { pagy_headers_merge(@pagy) if @pagy }
   end
 
   def category_params
-    params.require(:category).permit(:title)
+    params.require(:category).permit(:title, :article_id)
   end
 end
